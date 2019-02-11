@@ -1,0 +1,700 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; U) [Netscape]">
+   <title>Getargs.py</title>
+<!--------------------------------------------------------------->
+<!--     AUTHOR:   Ivan Van Laningham                          -->
+<!--     E-MAIL:   ivanlan@callware.com                        -->
+<!--------------------------------------------------------------->
+<script language="JavaScript1.1">
+function mayamodified ( ) {
+now = new Date ( ) ;
+y2k = new Date ( "Jan 1 2000 00:00:00" ) ;
+seconds = ( y2k - now ) / 1000.0 ;
+qqq = Date.parse ( document.lastModified ) ;
+qqq = qqq / 1000.0 ;
+tmp = Math.round ( qqq ) ;
+tmp /= 86400 ;
+tmp += 2440588 ;
+tmp = Math.floor ( tmp ) ;
+tmp -= 584285 ;
+
+mday = tmp ;
+
+lc = new Array ( 5 ) ;
+
+lc[ 0 ] = Math.floor ( tmp / 144000 ) ;
+x = tmp - ( lc[ 0 ] * 144000 ) ;
+lc[ 1 ] = Math.floor ( x / 7200 ) ;
+x = x - ( lc[ 1 ] * 7200 ) ;
+lc[ 2 ] = Math.floor ( x / 360 ) ;
+x = x - ( lc[ 2 ] * 360 ) ;
+lc[ 3 ] = Math.floor ( x / 20 ) ;
+x = x - ( lc[ 3 ] * 20 ) ;
+lc[ 4 ] = Math.floor ( x ) ;
+
+document.write ( "Last updated: ", lc[ 0 ], ".", lc[ 1 ], ".", lc[ 2 ], ".", lc[ 3 ], ".", lc[ 4 ] ) ;
+
+y = ( mday + 348 ) % 365 ;
+if ( y < 0 )
+{
+    y = 365 + y ;
+    y %= 365 ;
+}
+t = ( mday + 4 ) % 13 ;
+if ( t < 0 )
+{
+    t = ( 13 + t )
+    t %- 13 ;
+}
+if ( t == 0 )
+{
+    t = 13 ;
+}
+v = ( mday + 19 ) % 20 ;
+if ( v < 0 )
+{
+    v = 20 + v ;
+    v %= 20 ;
+}
+
+mo = Math.floor ( y / 20 ) ;
+cd = y - ( mo * 20 ) ;
+gg = ( ( lc[ 3 ] * 2 ) + lc[ 4 ] ) % 9 ;
+
+almanacs = new Array ( 20 ) ;
+almanacs[ 0 ] =  "'Imix" ;
+almanacs[ 1 ] = "'Ik'" ;
+almanacs[ 2 ] = "Ak'bal" ;
+almanacs[ 3 ] = "K'an" ;
+almanacs[ 4 ] = "Chik'chan" ;
+almanacs[ 5 ] = "Kimi" ;
+almanacs[ 6 ] = "Manik'" ;
+almanacs[ 7 ] = "Lamat" ;
+almanacs[ 8 ] = "Muluk" ;
+almanacs[ 9 ] = "Ok" ;
+almanacs[ 10 ] = "Chuwen" ;
+almanacs[ 11 ] = "'Eb" ;
+almanacs[ 12 ] = "Ben" ;
+almanacs[ 13 ] = "'Ix" ;
+almanacs[ 14 ] = "Men" ;
+almanacs[ 15 ] = "K'ib" ;
+almanacs[ 16 ] = "Kaban" ;
+almanacs[ 17 ] = "'Etz'nab" ;
+almanacs[ 18 ] = "Kawak" ;
+almanacs[ 19 ] = "'Ahaw" ;
+
+civils = new Array ( 19 ) ;
+civils[ 0 ] = "Pohp" ;
+civils[ 1 ] = "Wo" ;
+civils[ 2 ] = "Sip" ;
+civils[ 3 ] = "Sots" ;
+civils[ 4 ] = "Sek" ;
+civils[ 5 ] = "Xul" ;
+civils[ 6 ] = "Yaxk'in" ;
+civils[ 7 ] = "Mol" ;
+civils[ 8 ] = "Ch'en" ;
+civils[ 9 ] = "Yax" ;
+civils[ 10 ] = "Sac" ;
+civils[ 11 ] = "Keh" ;
+civils[ 12 ] = "Mak" ;
+civils[ 13 ] = "K'ank'in" ;
+civils[ 14 ] = "Muwan" ;
+civils[ 15 ] = "Pax" ;
+civils[ 16 ] = "K'ayab" ;
+civils[ 17 ] = "Kumk'u" ;
+civils[ 18 ] = "Wayeb" ;
+
+document.write ( "&nbsp;&nbsp;", t, " ", almanacs[ v ], " ", cd, " ", civils[ mo ], " ", "G", gg ) ;
+document.write ( " (", document.lastModified, ")", "<br>" ) ;
+}
+</script>
+</head>
+<body text="#007090" bgcolor="#F0F0C0">
+
+<center><a href="Default.htm"><img SRC="snkanim.gif" BORDER=0 height=32 width=512></a></center>
+
+<center>
+<h1>
+<font face="Helvetica">Getargs.py</font></h1></center>
+
+<center><img SRC="Constel_2.gif" height=16 width=415></center>
+
+<p><font face="Helvetica">HTML Documentation for <i>getargs.py</i>.</font>
+<center><img SRC="longbone.gif" height=16 width=512></center>
+<font face="Helvetica">This is the official documentation for <i>getargs.py</i>,
+a command-line argument-parsing module for Python.</font>
+<h1>
+<font face="Helvetica">MODULE: <i>getargs</i></font></h1>
+<font face="Helvetica">Generalized option handling for Python programs.</font>
+<h1>
+<font face="Helvetica">USAGE</font></h1>
+
+<pre><tt>&nbsp;&nbsp;&nbsp; from getargs import *</tt></pre>
+
+<ul>
+<li>
+<font face="Helvetica">Set the variable '<i>progname</i>' to <i>sys.argv[0]</i>;</font></li>
+
+<li>
+<font face="Helvetica">define any functions you may need in the <i>arglist</i>;</font></li>
+
+<li>
+<font face="Helvetica">create an argument list of the form</font></li>
+
+<pre><tt>&nbsp;&nbsp;&nbsp; arglist = (
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'i', 0, "An integer argument", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'f', 0.0, "A Float argument", 3.14159 ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...
+&nbsp;&nbsp;&nbsp; )</tt></pre>
+
+<li>
+<font face="Helvetica">Instantiate a class arguments variable:</font></li>
+
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xarg = arguments ( '-', arglist )</tt></pre>
+
+<li>
+<font face="Helvetica">Call the <i>xarg.getargs()</i> method:</font></li>
+
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; progname, sys.argv = xarg.getargs ( sys.argv )</tt></pre>
+
+<li>
+<font face="Helvetica">To query an option, use the <i>value() </i>method:</font></li>
+
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if xarg.value ( 'i' ) != None :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do something. ...</tt></pre>
+<font face="Helvetica">Boolean options have only two possible values, 1
+or 0; if two or more options are mutually exclusive, it is the programmer's
+responisibility to see that the exclusivity is maintained, using the setvalue()
+method:</font>
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if xarg.value ( 'j' ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xarg.setvalue ( 'g', 0 )</tt></pre>
+</ul>
+
+<h1>
+<font face="Helvetica">ARGLIST FIELDS</font></h1>
+<font face="Helvetica">Arglist fields are:</font>
+<p><font face="Helvetica">( <i>key, type, docstring, value, mode</i> )</font>
+<p><font face="Helvetica">where:</font>
+<ul>
+<li>
+<font face="Helvetica"><b><i>key</i></b> = A single letter or a fullword
+used to find the option in sys.argv</font></li>
+
+<li>
+<font face="Helvetica"><b><i>type</i></b> = one of:</font></li>
+
+<ul>
+<li>
+<font face="Helvetica"><b>None</b> == A boolean option; these keys take
+no arguments;</font></li>
+
+<li>
+<font face="Helvetica"><b>0j</b> == Autoincrementing flag; -i gives value
+1, -iii gives value 3, etc.</font></li>
+
+<li>
+<font face="Helvetica"><b>0</b> == Requires an integer argument;</font></li>
+
+<li>
+<font face="Helvetica"><b>0L</b> == Requires a long integer argument (may
+end in 'L';</font></li>
+
+<li>
+<font face="Helvetica"><b>0.0</b> == Requires a floating point argument;
+integer, but not long, strings are converted into floats;</font></li>
+
+<li>
+<font face="Helvetica"><b>nofile</b> = Requires a filename argument, or
+one of "stdin", "stdout" or "stderr";</font></li>
+
+<li>
+<font face="Helvetica"><b>nofunc</b> = Value must be a valid function;
+takes no arguments;</font></li>
+
+<li>
+<font face="Helvetica"><b>()</b> == Requires a list of arguments, usually
+of the form 'a b c d e', which is returned as a tuple</font></li>
+
+<li>
+<font face="Helvetica"><b>[]</b> == Requires a list of arguments, usually
+of the form 'a b c d e', which is returned as a list</font></li>
+</ul>
+
+<li>
+<font face="Helvetica"><b><i>docstring</i></b> = String that represents
+the hint the user sees, as in:</font></li>
+
+<br><font face="Helvetica">"Print a help message and exit"</font>
+<li>
+<font face="Helvetica"><b><i>value</i></b> = The default value; if this
+is not provided, <b>None</b> will be used.</font></li>
+
+<li>
+<font face="Helvetica"><b><i>mode</i></b> = Used for file options only;
+provides the second argument to <i>open()</i>; defaults to "r".</font></li>
+</ul>
+
+<h1>
+<font face="Helvetica">SINGLE LETTER OPTIONS</font></h1>
+<font face="Helvetica">Single letter options that take arguments (non-boolean)
+may do so in one of two ways, either immediately following the keyletter
+('</font><tt>-i29</tt><font face="Helvetica">') or following a space ('</font><tt>-i
+29</tt><font face="Helvetica">'). The choice is the user's, not the programmer's.&nbsp;
+Single letter options of the autoincrementing variety have a default value
+of 0.&nbsp; Each repetition of the keyletter in the option arguments increments
+the flag value by one.&nbsp; "-i" has a value of 1, while "-iiii" has a
+value of 4, for example.</font>
+<h1>
+<font face="Helvetica">LONG OPTIONS</font></h1>
+<font face="Helvetica">Long options that take arguments (non-boolean) may
+do so in one of two ways, either separated by a space ('</font><tt>-integer
+29</tt><font face="Helvetica">') or separated by a separator character,
+by default the '=' sign ('</font><tt>-integer=29</tt><font face="Helvetica">').
+Again, the choice is left to the user, not the programmer.&nbsp; Autoincrementing
+long options are not supported.</font>
+<h1>
+<font face="Helvetica">LIST AND TUPLE ARGUMENTS</font></h1>
+<font face="Helvetica">Options that require list or tuple arguments need
+such an argument in the form of a list, which probably needs to be quoted.
+By default, the list has the form</font>
+<pre><font face="Helvetica">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '</font><tt>a b c d e f</tt><font face="Helvetica">'</font></pre>
+<font face="Helvetica">but by using the setsep() method the programmer
+can have it be of the form</font>
+<pre><font face="Helvetica">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '</font><tt>a,b,c,d,e,f</tt><font face="Helvetica">'</font></pre>
+<font face="Helvetica">for example.</font>
+<h1>
+<font face="Helvetica">ORDER OF OPTIONS</font></h1>
+<font face="Helvetica">The order of options is not significant. You cannot
+tell if one option has been set on the command line before another; this
+should not be a problem.</font>
+<h1>
+<font face="Helvetica">CASE</font></h1>
+<font face="Helvetica">The case of options is significant; '</font><tt>i</tt><font face="Helvetica">'
+and '</font><tt>I</tt><font face="Helvetica">' are different options, and
+so are '</font><tt>-integer</tt><font face="Helvetica">' and '</font><tt>-Integer</tt><font face="Helvetica">'
+(and also '</font><tt>-inTegeR</tt><font face="Helvetica">'). However,
+on long options, the user only needs to provide sufficient information
+in order to set or toggle an option. The matching algorithm searches for
+whatever substring the user provides; if the substring matches more than
+one option, then it looks first for an <i>exact</i> match. Failing that,
+it will match the <i>longest</i> option name it can for the substring provided.
+I.e., if there are two options </font><tt>-h</tt><font face="Helvetica">
+and </font><tt>-help</tt><font face="Helvetica">, and the user types '</font><tt>-he</tt><font face="Helvetica">',
+then the option matched will be </font><tt>-help</tt><font face="Helvetica">.</font>
+<h1>
+<font face="Helvetica">FILE OPTIONS</font></h1>
+<font face="Helvetica">The type of these is determined by matching against
+the value '</font><tt>nofile</tt><font face="Helvetica">', which is defined
+to be the same as the value returned by '</font><tt>open("/dev/null", "r")</tt><font face="Helvetica">';
+if users are on a PC or on a Mac, they won't have "</font><tt>/dev/null</tt><font face="Helvetica">",
+so "</font><tt>nul</tt><font face="Helvetica">" is used instead.</font>
+<h1>
+<font face="Helvetica">DETERMINING IF AN OPTION HAS APPEARED ON THE COMMAND
+LINE</font></h1>
+<font face="Helvetica">If the programmer provides a <i>default</i> value
+other than <b>None</b>, then there is no way to tell if the option appeared
+on the command line. However, if the default value is <b>None</b>, then
+the <i>value()</i> method will return non-<b>None</b> if and only if the
+user put it in the command line. This even works for boolean options, since
+the only way for one to be set this way is in the arglist; all other methods
+set the value to either 0 or 1.&nbsp; Autoincrementing options will have
+the value 0 if they did not appear on the command line.</font>
+<h1>
+<font face="Helvetica">VARIABLES</font></h1>
+<font face="Helvetica">The only variables in the getargs module are '<i>nofile</i>',
+which is used only to find the type of file options, and VERSION, which
+can be found below.</font>
+<h1>
+<font face="Helvetica">FUNCTIONS</font></h1>
+<font face="Helvetica">Functions provided by the getargs module are:</font>
+<br>&nbsp;
+<center><table>
+<tr>
+<th ALIGN=RIGHT><font face="Helvetica">nofunc()&nbsp;</font></th>
+
+<td ALIGN=LEFT><font face="Helvetica">Provided to find the type of function
+options.&nbsp;</font></td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT><font face="Helvetica">isnumber()&nbsp;</font></th>
+
+<td ALIGN=LEFT><font face="Helvetica">Used to determine if a string can
+be converted into an integer; the string can contain only digits or '-'
+or '+'.&nbsp;</font></td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT><font face="Helvetica">islong()</font></th>
+
+<td ALIGN=LEFT><font face="Helvetica">Same as <i>isnumber()</i>, except
+the string can also contain the letter 'L'.&nbsp;</font></td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT><font face="Helvetica">isfloat()&nbsp;</font></th>
+
+<td ALIGN=LEFT><font face="Helvetica">The string contains digits, a period,
+signs or the letters 'e' or 'E'.&nbsp;</font></td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT><font face="Helvetica">manpage()&nbsp;</font></th>
+
+<td ALIGN=LEFT><font face="Helvetica">Returns the <b>__doc__ </b>attribute
+for the getargs module.&nbsp;</font></td>
+</tr>
+</table></center>
+
+<h1>
+<font face="Helvetica">CLASS</font></h1>
+<font face="Helvetica">The only class provided by getargs is class <i>arguments</i>.</font>
+<h1>
+<font face="Helvetica">METHODS</font></h1>
+<font face="Helvetica">The methods provided by the <i>arguments</i> class
+are:</font>
+<ul>
+<li>
+<font face="Helvetica"><b>__init__</b> ( self, c = '-', a = ( ) ) : where</font></li>
+
+<br><font face="Helvetica">c = switch character for options. a = an arglist
+as defined above.</font>
+<li>
+<font face="Helvetica"><b>__del__</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">closes any open files.</font>
+<li>
+<font face="Helvetica"><b>__repr__ </b>( self ) :</font></li>
+
+<br><font face="Helvetica">Returns a string that can be used to display
+short help to the user.</font>
+<li>
+<font face="Helvetica"><b>options</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns a string of option letters or option
+words, suitably separated if need be, for use in a "Usage" message.</font>
+<li>
+<font face="Helvetica"><b>argtype</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns a string representing the argument type
+expected by the option. This can be one of:</font>
+<ul>
+<li>
+<font face="Helvetica">"#" for integers and longs;</font></li>
+
+<li>
+<font face="Helvetica">"*" for autoincrementers;</font></li>
+
+<li>
+<font face="Helvetica">"#.#" for floats;</font></li>
+
+<li>
+<font face="Helvetica">"<file>" for filenames for file options;</font></li>
+
+<li>
+<font face="Helvetica">"<list>" for lists and tuples;</font></li>
+
+<li>
+<font face="Helvetica">"" for everything else.</font></li>
+</ul>
+<font face="Helvetica">This method is used in __repr__.</font>
+<li>
+<font face="Helvetica"><b>has_key </b>( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns 1 if the option key let was defined
+in the arglist, or 0 if it has not.</font>
+<li>
+<font face="Helvetica"><b>additem</b> ( self, let, typ, str, v = None,
+mode = "r" ) :</font></li>
+
+<br><font face="Helvetica">Adds a new option and fields to an existing
+arguments class variable, where:</font>
+<ul>
+<li>
+<font face="Helvetica">let = The option letter or word;</font></li>
+
+<li>
+<font face="Helvetica">type = the type (0, 0L, etc.)</font></li>
+
+<li>
+<font face="Helvetica">v = default value;</font></li>
+
+<li>
+<font face="Helvetica">mode = second argument to open().</font></li>
+</ul>
+<font face="Helvetica">Used internally; you shouldn't ordinarily need to
+use this.</font>
+<li>
+<font face="Helvetica"><b>type</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns either the type of option ("<type 'dictionary'>",
+etc.) or None if there is no such option.</font>
+<li>
+<font face="Helvetica"><b>value</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns either the value of the option (0, 49L,
+etc.) or None if there is no such option.</font>
+<li>
+<font face="Helvetica"><b>mode</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns either the mode to be used in opening
+the file or None if there is no such option.</font>
+<li>
+<font face="Helvetica"><b>file</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">If there is no such option, returns None. Otherwise,
+returns the filename, the mode, and the file pointer (fname,mode,fp); the
+file pointer is either None, in which case the open() method needs to be
+called, or an already open file pointer which may be used directly.</font>
+<li>
+<font face="Helvetica"><b>open</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">If this is a file option and the option exists,
+performs an open() on the filename using the stored mode. Returns None
+if the option doesn't exist or if open() returns None.</font>
+<li>
+<font face="Helvetica"><b>close</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">If this is a valid option and the file pointer
+is open, fflushes it and closes it. There is no return value. Automatically
+called by the __del__ method, so you don't always need to do this.</font>
+<li>
+<font face="Helvetica"><b>docstring</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Returns the docstring, if there is one and if
+let is a valid option.</font>
+<li>
+<font face="Helvetica"><b>len</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns the number of options currently defined.</font>
+<li>
+<font face="Helvetica"><b>keys</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns a _sorted_ list of the options. If there
+are no options currently defined, returns None.</font>
+<li>
+<font face="Helvetica"><b>longest</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns 0 or the len() of the longest option
+string.</font>
+<li>
+<font face="Helvetica"><b>longestargtype</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns 0 or the len() of the longest argtype
+string used by the current set of options.</font>
+<li>
+<font face="Helvetica"><b>switchchar</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns the switch character, which is '-' by
+default.</font>
+<li>
+<font face="Helvetica"><b>setswitch</b> ( self, let ) :</font></li>
+
+<br><font face="Helvetica">Sets the switch character (the option lead-in
+character) to let: on PCs, for example, you could set this to '/'.</font>
+<li>
+<font face="Helvetica"><b>sepchar</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns the list separator character, which
+is ' ' by default.</font>
+<li>
+<font face="Helvetica"><b>setsep</b> ( self, c ) :</font></li>
+
+<br><font face="Helvetica">Sets the list separator character to c; a good
+alternate for this might be ','.</font>
+<li>
+<font face="Helvetica"><b>parenchar</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns the character used to separate option
+letters or words from their docstrings when building the __repr__ string.</font>
+<li>
+<font face="Helvetica"><b>setsep</b> ( self, c ) :</font></li>
+
+<br><font face="Helvetica">Sets the option separator character to c; for
+example, setting this to ']' would result in</font>
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h] Help</tt></pre>
+<font face="Helvetica">instead of</font>
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h) Help</tt></pre>
+
+<li>
+<font face="Helvetica"><b>eqchar</b> ( self ) :</font></li>
+
+<br><font face="Helvetica">Returns the character that separates long options
+from their values, which is set to '=' by default.</font>
+<li>
+<font face="Helvetica"><b>seteq</b> ( self, c ) :</font></li>
+
+<br><font face="Helvetica">Sets the long option value separator character
+to c; it's not a good idea to set this to ' '.</font>
+<li>
+<font face="Helvetica"><b>setvalue</b> ( self, c, v ) :</font></li>
+
+<br><font face="Helvetica">If c is a valid option, this method checks the
+type of v with the required type of c. The value indicated by v may not
+be None. Attempting to set an improper value prints an error message and
+otherwise does nothing.</font>
+<li>
+<font face="Helvetica"><b>setargs</b> ( self, list ) :</font></li>
+
+<br><font face="Helvetica">If list is a list of the form ( ( let, type,
+docstring, ... ), ... ), then setargs() runs through the outer list and
+uses the elements of the inner lists as parameters to the additem() method.</font>
+<li>
+<font face="Helvetica"><b>matchlongarg</b> ( self, m ) :</font></li>
+
+<br><font face="Helvetica">It's better not to use this; it's used internally
+by the getargs() method, where the context is set correctly. What it does
+is look through all the options to see if it can make a match with m; not
+all characters have to match exactly. If m is 'long', for example, and
+there are options 'l', 'lo' and 'longest', then matchlongarg() will return
+'longest' as its best choice. The return value can then be used as an option
+key in, say, setvalue().</font>
+<li>
+<font face="Helvetica"><b>getargs</b> ( self, argv ) :</font></li>
+
+<br><font face="Helvetica">This is the interface between the option list
+(well, actually a dictionary of dictionaries) and the program's command
+line. The proper way to use this method is (for example):</font>
+<pre><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xarg = arguments ( '-', arglist )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; progname, sys.argv = xarg.getargs ( sys.argv )</tt></pre>
+<font face="Helvetica">After which <i>sys.argv[ 0 ]</i> and all options
+between <i>argv[ 0 ]</i> and the first non-option argument will be consumed,
+leaving the program responsible for any remaining command-line parameters.
+Values of any of the options that were consumed may be obtained through
+the <i>value()</i> method.</font></ul>
+
+<h1>
+<font face="Helvetica">HISTORICAL NOTE</font></h1>
+<font face="Helvetica">I first built a version of <i>getargs</i> in C many
+years ago, but I no longer support the C version; I never released it because
+I was never satisfied with it, and because it was much too delicate for
+public performance. Also, because it was written in C (not C++), it could
+be very complicated to use. The Python version cures all those problems,
+although I recognize that it's probably more complicated than some people
+would like. I'm always open to simplification suggestions.</font>
+<h1>
+<font face="Helvetica">BUGS AND SPECIAL CONSIDERATIONS</font></h1>
+<font face="Helvetica">Functions referred to in arglist must be defined
+before the arglist. The program name (progname) must be defined (as in
+"</font><tt>progname = sys.argv[ 0 ]</tt><font face="Helvetica">") before
+you can use it in any function referred to in the arglist. Such functions
+are called as soon as they are found in the command line.</font>
+<p><font face="Helvetica">There's no way to specify complex numbers on
+the command line, and no complex argument type.&nbsp; This will eventually
+be remedied.</font>
+<p><font face="Helvetica">While there is no way to tell if any option has
+been set before any other option, the parser does proceed in a linear manner;
+i.e., "</font><tt>-out foo -help</tt><font face="Helvetica">" would actually
+set the "</font><tt>-out</tt><font face="Helvetica">" value "<i>foo</i>"
+before the "</font><tt>-help</tt><font face="Helvetica">" function was
+called. Not that there's much utility in that.</font>
+<p><font face="Helvetica">Report any bugs found to <a href="mailto:ivanlan@callware.com">ivanlan@callware.com</a>.
+Report any infelicitous grammar or language errors in this <b>__doc__</b>
+attribute or HTML page to the same place.</font>
+<p><font face="Helvetica">Thank you for using <i>getargs</i>.</font>
+<h1>
+<font face="Helvetica">COPYRIGHT</font></h1>
+<font face="Helvetica">Copyright 1994, 1995, 1996, 1997, 1998, 1999 by
+Ivan Van Laningham.</font>
+<br><font face="Helvetica">All rights reserved.</font>
+<br><font face="Helvetica">License granted to anyone for non-commercial
+use, as long as this copyright notice and the author's name are included
+in any modifications, and such modifications are reported to the author
+for consideration in future releases.</font>
+<h1>
+<font face="Helvetica">VERSION</font></h1>
+<font face="Helvetica">Version 1.3,&nbsp; 12.19.6.11.6&nbsp; 13 Kimi&nbsp;
+14 Yax&nbsp; G1&nbsp; 11:11:01</font>
+<h1>
+<font face="Helvetica">EXAMPLE</font></h1>
+<font face="Helvetica">Here's a complete test program in Python:</font>
+<pre><tt>#!/usr/local/bin/python
+
+#
+# Copyright 1999
+# by Ivan Van Laningham
+# All Rights Reserved.
+#
+
+import sys
+import os&nbsp;
+import time
+import math
+import string
+
+from getargs import *
+
+
+if __name__ == "__main__" :
+&nbsp;&nbsp;&nbsp; progname = sys.argv[ 0 ]
+
+&nbsp;&nbsp;&nbsp; def printversion ( l = 0 ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "Version 1.%s" % ( l )
+
+&nbsp;&nbsp;&nbsp; def man ( l = 0 ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print manpage ( )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sys.exit ( 0 )
+
+&nbsp;&nbsp;&nbsp; def helpPig ( l = 0 ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "%s:&nbsp; Usage %s any old gunk" % ( progname, xarg.options ( ) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print xarg,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "I'm Porky Pig"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sys.exit ( 0 )
+
+&nbsp;&nbsp;&nbsp; def helpHog ( l = 0 ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print xarg,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "I'm a HAWG!"
+
+&nbsp;&nbsp;&nbsp; arglist = ( ( 'v', nofunc,&nbsp;&nbsp;&nbsp; "Function (print version)", printversion ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'M', nofunc, "Man page", man ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '-manual', nofunc, "Man page", man ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'i', 0, "Integer", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'f', 0.0, "Float", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '+snorgle', "", "A Fubar String", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'tuple', ( ), "Nameless tuple", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'q', None, "None test", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'list', [ ], "Nameless list", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'h', nofunc, "Help", helpPig ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'hogs', nofunc, "Help", helpHog ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( 'qln', 0L, "Funky Long", None ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '-longarg', None, "Boolean long argument" ), # Adding leading - provides --longarg syntax. ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '-output', nofile, "the output file", "/tmp/dogbone" ),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '-longest', None, "Boolean long argument" ), # Adding leading - provides --longarg syntax. ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( '-longerlongerandlonger', 0, "Integer long argument", None ), # Adding leading - provides --longarg syntax. ...
+&nbsp;&nbsp;&nbsp; )
+&nbsp;&nbsp;&nbsp; xarg = arguments ( '-', arglist )
+&nbsp;&nbsp;&nbsp; progname, sys.argv = xarg.getargs ( sys.argv )
+&nbsp;&nbsp;&nbsp; helpHog ( )
+
+&nbsp;&nbsp;&nbsp; q = xarg.keys ( )
+&nbsp;&nbsp;&nbsp; for ii in q :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print ii, xarg.value ( ii )
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; o = 0
+&nbsp;&nbsp;&nbsp; for n in range ( len ( sys.argv ) ) :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print o, sys.argv[ n ]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o = o + 1</tt></pre>
+
+<h1>
+<font face="Helvetica">AVAILABILITY</font></h1>
+<font face="Helvetica">You can download <i>getargs.py</i>, <i>testarg.py</i>
+and this file, <i>getargs.html</i> at:</font>
+<ul>
+<li>
+<font face="Helvetica"><a href="ftp://www.pauahtun.org/pub/getargspy.zip">ftp://www.pauahtun.org/pub/getargspy.zip</a>.</font></li>
+</ul>
+
+<center><img SRC="longbone.gif" height=16 width=512>
+<br><a href="Default.htm"><img SRC="up.gif" height=20 width=20></a>
+<br><img SRC="longbone.gif" height=16 width=512></center>
+<script language="JavaScript1.1">
+mayamodified ( ) ;
+</script>
+<font face="Helvetica"><font size=-2>Copyright
+&copy; 1999 Ivan Van Laningham</font></font>
+<br><font face="Helvetica"><font size=-2><a href="mailto:ivanlan@callware.com">ivanlan@callware.com</a></font></font>
+</body>
+</html>
