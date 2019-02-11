@@ -536,7 +536,23 @@ class arguments:
                     fp.close()
                     fp = None
 
-    #           print "Closed file ", t[ "value" ]
+    def toString(self):
+        if len(self) > 0:
+            lflag = ""
+            tl = self.longest() + 2
+            if tl > 3:
+                lflag = " "
+            s = ""
+            t = self.keys()
+            for i in t:
+                ss = self.switch
+                s = s + "%s %s" % (
+                    string.ljust(self.switch + i + lflag, tl),
+                    self.value(i),
+                )
+                s = s + "\n"
+            return s
+        return ""
 
     def docstring(self, let):
         if self.args.has_key(let):
