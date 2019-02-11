@@ -366,14 +366,15 @@ def isfloat ( s ) :
 
 class arguments :
     def __init__ ( self, c = '-', a = ( ) ) :
-	self.switch = c
-	self.args = { }
-	self.ne = 0
-	self.sep = ' '
-	self.argparen = ')'
-	self.argeq = '='
-	if not a == ( ) :
-	    self.setargs ( a )
+
+    self.switch = c
+    self.args = { }
+    self.ne = 0
+    self.sep = None
+    self.argparen = ')'
+    self.argeq = '='
+    if not a == ( ) :
+        self.setargs ( a )
 
     def __del__ ( self ) :
 	k = self.keys ( )
@@ -456,14 +457,24 @@ class arguments :
 	return None
     
     def value ( self, let ) :
-	if self.args.has_key ( let ) :
-	    t = self.args[ let ]
-	    if type ( t[ "value" ] ) == type ( 0j ) :
-		n = int ( abs ( t[ "value" ] ) )
-		return n
-	    else :
-		return t[ "value" ]
-	return None
+    if self.args.has_key ( let ) :
+        t = self.args[ let ]
+        if type ( t[ "value" ] ) == type ( 0j ) :
+        n = int ( abs ( t[ "value" ] ) )
+        return n
+        else :
+        return t[ "value" ]
+    return None
+
+    def __getitem__ ( self, let ) :
+    if self.args.has_key ( let ) :
+        t = self.args[ let ]
+        if type ( t[ "value" ] ) == type ( 0j ) :
+        n = int ( abs ( t[ "value" ] ) )
+        return n
+        else :
+        return t[ "value" ]
+    return None
 
     def mode ( self, let ) :
 	if self.args.has_key ( let ) :
